@@ -378,8 +378,18 @@ function isBracketsBalanced(str) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  const tempArr = [];
+  let a;
+  let digit = num;
+  do {
+    a = Math.floor(digit / n);
+    const modulo = digit % n;
+    tempArr.push(modulo);
+    digit = a;
+  } while (a > 0);
+
+  return tempArr.reverse().join('');
 }
 
 
@@ -395,8 +405,19 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  let result = '';
+  if (!(pathes.every((item) => item[0] === '/'))) {
+    return '';
+  }
+  for (let i = 1; i < pathes[0].length; i += 1) {
+    const temp = pathes[0].slice(0, i);
+    if (pathes.every((item) => item.includes(temp))) {
+      result = temp;
+    }
+  }
+  const last = result.lastIndexOf('/');
+  return result.slice(0, last + 1);
 }
 
 
@@ -418,8 +439,24 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  let resultRow = [];
+  const result = [];
+  const sumCount = m1[0].length;
+  const rowCount = m1.length;
+  const columnCount = m2[0].length;
+  for (let i = 0; i < rowCount; i += 1) {
+    for (let k = 0; k < columnCount; k += 1) {
+      let sum = 0;
+      for (let j = 0; j < sumCount; j += 1) {
+        sum += m1[i][j] * m2[j][k];
+      }
+      resultRow.push(sum);
+    }
+    result.push(resultRow);
+    resultRow = [];
+  }
+  return result;
 }
 
 
@@ -453,8 +490,30 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const a = position[1][1];
+  if ((position[0][0] === position[2][2] && position[0][0] === a)
+    || (position[0][2] === position[2][0] && position[0][2] === a)) {
+    return a;
+  }
+  const lines = [];
+  for (let i = 0; i < 3; i += 1) {
+    let temp = '';
+    for (let j = 0; j < 3; j += 1) {
+      temp += position[i][j];
+    }
+    lines.push(temp);
+  }
+  for (let i = 0; i < 3; i += 1) {
+    let temp = '';
+    for (let j = 0; j < 3; j += 1) {
+      temp += position[j][i];
+    }
+    lines.push(temp);
+  }
+  if (lines.includes('000')) { return '0'; }
+  if (lines.includes('XXX')) { return 'X'; }
+  return undefined;
 }
 
 
