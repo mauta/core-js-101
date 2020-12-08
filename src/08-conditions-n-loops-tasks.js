@@ -281,18 +281,14 @@ function reverseInteger(num) {
 function isCreditCardNumber(ccn) {
   let sum = 0;
   const numbers = String(ccn);
-
   for (let i = 0; i < numbers.length; i += 1) {
     let cardNum = +(numbers[i]);
-
     if ((numbers.length - i) % 2 === 0) {
       cardNum *= 2;
-
       if (cardNum > 9) {
         cardNum -= 9;
       }
     }
-
     sum += cardNum;
   }
 

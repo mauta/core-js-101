@@ -424,8 +424,14 @@ function toStringList(arr) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  *    ]
  */
-function sortCitiesArray(/* arr */) {
-  throw new Error('Not implemented');
+function sortCitiesArray(arr) {
+  return arr.sort((a, b) => {
+    if (a.country < b.country) return -1;
+    if (a.country > b.country) return 1;
+    if (a.city < b.city) return -1;
+    if (a.city > b.city) return 1;
+    return 0;
+  });
 }
 
 /**
@@ -446,8 +452,12 @@ function sortCitiesArray(/* arr */) {
  *           [0,0,0,1,0],
  *           [0,0,0,0,1]]
  */
-function getIdentityMatrix(/* n */) {
-  throw new Error('Not implemented');
+function getIdentityMatrix(n) {
+  return new Array(n).fill(0).map((item, ind) => {
+    const bbb = new Array(n).fill(0);
+    bbb[ind] = 1;
+    return bbb;
+  });
 }
 
 /**
@@ -463,8 +473,8 @@ function getIdentityMatrix(/* n */) {
  *     0, 100 => [ 0, 1, 2, ..., 100 ]
  *     3, 3   => [ 3 ]
  */
-function getIntervalArray(/* start, end */) {
-  throw new Error('Not implemented');
+function getIntervalArray(start, end) {
+  return Array(end - start + 1).fill(start).map((item, ind) => item + ind);
 }
 
 /**
@@ -512,10 +522,42 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const res = array.reduce((acc, item) => {
+    if (!acc.has(keySelector(item))) {
+      acc.set(keySelector(item), [valueSelector(item)]);
+    } else {
+      acc.get(keySelector(item)).push(valueSelector(item));
+    }
+    return acc;
+  }, new Map());
+  return res;
 }
 
+// function group(array, keySelector, valueSelector) {
+//   const res = array.reduce((acc, item) => {
+//     if (!acc.has(item[keySelector])) {
+//       acc.set(item[keySelector], [item[valueSelector]]);
+//     } else {
+//       acc.get(item[keySelector]).push(item[valueSelector]);
+//     }
+//     return acc;
+//   }, new Map());
+//   return res;
+// }
+
+// const citys = {};
+
+// array.map((item) => {
+//   if (!citys.hasOwnProperty(item[keySelector])) {
+//     citys[item[keySelector]] = [item[valueSelector]];
+//   } else {
+//     citys[item[keySelector]] = citys[item[keySelector]].concat([item[valueSelector]]);
+//   }
+//   return citys;
+// });
+
+// return citys;
 
 /**
  * Projects each element of the specified array to a sequence
@@ -530,10 +572,13 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return arr.reduce((result, item) => result.concat(childrenSelector(item)), []);
 }
 
+// let result = [];
+// arr.forEach((item) => { result = result.concat(childrenSelector(item)); });
+// return result;
 
 /**
  * Returns an element from the multidimentional array by the specified indexes.
@@ -547,8 +592,13 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  if (indexes.length === 1) {
+    return arr[indexes[0]];
+  }
+  const newArr = arr[indexes[0]];
+  indexes.shift();
+  return getElementByIndexes(newArr, indexes);
 }
 
 
@@ -570,8 +620,15 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  if (arr.length === 1) {
+    return arr;
+  }
+  const countHalf = Math.floor(arr.length / 2);
+  if (arr.length % 2) {
+    return [...arr.slice(-countHalf), arr[countHalf], ...arr.slice(0, countHalf)];
+  }
+  return [...arr.slice(-countHalf), ...arr.slice(0, countHalf)];
 }
 
 
